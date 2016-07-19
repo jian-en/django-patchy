@@ -1,0 +1,6 @@
+# depends on Django but Django is dependable according to different versions
+
+# test env
+-r requirements/requirements-testing.txt
+# django
+-r requirements/requirements-optionals.txt
