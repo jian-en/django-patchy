@@ -1,6 +1,6 @@
 # Django Patchy
 
-[![pypi-version][pypi]]
+[![PyPI version](https://badge.fury.io/py/djangopatchy.svg)](https://badge.fury.io/py/djangopatchy)
 
 **Useful django app and utils to develop large-scale web app**
 
