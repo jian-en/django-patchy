@@ -1,5 +1,7 @@
 # Django Patchy
 
+[![pypi-version][pypi]]
+
 **Useful django app and utils to develop large-scale web app**
 
 # Requirements
