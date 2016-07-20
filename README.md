@@ -1,6 +1,6 @@
-# [Django Patchy]
+# Django Patchy
 
-**Useful django app and utils to dev large-scale web app**
+**Useful django app and utils to develop large-scale web app**
 
 # Requirements
 
@@ -28,4 +28,8 @@ MIDDLEWARE_CLASSES = (
 )
 ```
 
-Then for each web request, it has a header `X-ELAPSED` in seconds to indicate the time elapse. And a setting variable called `PATCHY_LONG_REQUEST_TIMEOUT` is provided. It can be set in the settings.py file. It defaults to 1 second. If it exceeds the `PATCHY_LONG_REQUEST_TIMEOUT` a error log message will be sent.
+* Then for each web request, it has a header `X-ELAPSED` in seconds to indicate the time elapse. 
+
+* And a setting variable called `PATCHY_LONG_REQUEST_TIMEOUT` is provided. It can be set in the settings.py file. It defaults to 1 second. 
+
+* If it exceeds the `PATCHY_LONG_REQUEST_TIMEOUT` a error log message will be sent.
