@@ -4,3 +4,5 @@
 -r requirements/requirements-testing.txt
 # django
 -r requirements/requirements-optionals.txt
+# packaging modules
+-r requirements/requirements-packaging.txt

@@ -2,9 +2,14 @@ import os
 import re
 from setuptools import setup
 
+try:
+    from pypandoc import convert
 
-def read_md(f):
-    return open(f, 'r').read()
+    def read_md(f):
+        return convert(f, 'rst')
+except ImportError:
+    def read_md(f):
+        return open(f, 'r').read()
 
 
 def get_version(package):
@@ -41,7 +46,7 @@ setup(
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Operating Systems :: OS Independent',
+        'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP',
     ]
