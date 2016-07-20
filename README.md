@@ -21,7 +21,7 @@ Install using `pip`...
 
 Let's add a middleware to calculate the time elapse for each request
 
-Add a middleware at the top:
+1. Add a middleware at the top:
 
 ```python
 MIDDLEWARE_CLASSES = (
@@ -30,8 +30,30 @@ MIDDLEWARE_CLASSES = (
 )
 ```
 
-* Then for each web request, it has a header `X-ELAPSED` in seconds to indicate the time elapse. 
+2. Add logger handler with `pathcy.middleware`:
 
-* And a setting variable called `PATCHY_LONG_REQUEST_TIMEOUT` is provided. It can be set in the settings.py file. It defaults to 1 second. 
+Example:
+
+```python
+'patchy.middleware': {
+    'handlers': ['sentry'],
+    'level': 'ERROR',
+    'propagate': True
+}
+```
+
+3. Set the timeout threshold in settings:
+
+```python
+PATCHY_LONG_REQUEST_TIMEOUT = 2  # set the timeout to 2 seconds
+```
+
+Results:
+
+* For each web request, it has a header variable `X-ELAPSED` in seconds to indicate the time elapse. 
+
+```bash
+X-ELAPSED: 0.005 # it means the request costs 5 ms
+```
 
 * If it exceeds the `PATCHY_LONG_REQUEST_TIMEOUT` a error log message will be sent.
