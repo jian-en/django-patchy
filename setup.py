@@ -4,7 +4,7 @@ from setuptools import setup
 
 
 def read_md(f):
-    return open(f, 'r', encoding='utf-8').read()
+    return open(f, 'r').read()
 
 
 def get_version(package):
@@ -28,11 +28,11 @@ version = get_version('patchy')
 setup(
     name='djangopatchy',
     version=version,
-    license='MIT License',
+    license='MIT',
     description='Useful django patch for large project',
     long_description=read_md('README.md'),
     author='Fu Jian',
-    author_email='fujian@luojilab.com',
+    author_email='fujian_en@126.com',
     packages=get_packages('patchy'),
     install_requires=[],
     zip_safe=False,
@@ -40,7 +40,7 @@ setup(
         'Framework :: Django',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: MIT License',
+        'License :: OSI Approved :: MIT License',
         'Operating Systems :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP',
