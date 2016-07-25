@@ -19,9 +19,9 @@ def long_sql_execute_wrapper(*args, **kwargs):
     try:
         start = time.time()
         result = original(*args, **kwargs)
-        end = time.time()
         return result
     finally:
+        end = time.time()
         duration = end - start
         if duration > TIMEOUT:
             try:
