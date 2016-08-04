@@ -1,10 +1,44 @@
 import time
 import logging
+import threading
+from functools import wraps
 
 from django.conf import settings
 from django.db.backends.utils import CursorWrapper
 
 logger = logging.getLogger(__name__)
+
+_locals = threading.local()
+
+
+def this_thread_is_sql_monitoring():
+    return getattr(_locals, 'sql_monitoring', True)
+
+def sql_monitoring_this_thread():
+    _locals.sql_monitoring = True
+
+def sql_unmonitoring_this_thread():
+    _locals.sql_monitoring = False
+
+class NoSQLMonitoring(object):
+     """A contextmanager/decorator to use the master database."""
+     def __call__(self, func):
+         @wraps(func)
+         def decorator(*args, **kw):
+             with self:
+                 return func(*args, **kw)
+         return decorator
+
+     def __enter__(self):
+         _locals.old = this_thread_is_sql_monitoring()
+         sql_monitoring_this_thread()
+
+     def __exit__(self, type, value, tb):
+         if not _locals.old:
+             sql_unmonitoring_this_thread()
+
+no_sql_monitoring = NoSQLMonitoring()
+
 
 try:
     TIMEOUT = settings.PATCHY_LONG_SQL_TIMEOUT
@@ -23,7 +57,7 @@ def long_sql_execute_wrapper(*args, **kwargs):
     finally:
         end = time.time()
         duration = end - start
-        if duration > TIMEOUT:
+        if duration > TIMEOUT and this_thread_is_sql_monitoring():
             try:
                 message = 'SQL: (%s), Args: (%s), Execution time: %.6fs' % (args[1], args[2], duration)
             except IndexError:
