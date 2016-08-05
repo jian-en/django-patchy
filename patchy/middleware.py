@@ -23,12 +23,8 @@ class LongRequestMiddleware(object):
         """
         self.ignore_url_patterns = getattr(settings, 'PATCHY_LONG_REQUEST_IGNORE_URLS', list())
         # skip any sql timeout mornitoring if lr is ignored
-        self.stick_to_lr = getattr(settings, 'PATCHY_LONG_SQL_STICK_TO_LONG_REQUEST_RULE', True)
-
-        try:
-            self.timeout = settings.PATCHY_LONG_REQUEST_TIMEOUT
-        except AttributeError:
-            self.timeout = 1
+        self.stick_to_lr = getattr(settings, 'PATCHY_STICK_TO_LR', True)
+        self.timeout = getattr(settings, 'PATCHY_LONG_REQUEST_TIMEOUT', 1)
 
     def process_request(self, request):
         """record the time in

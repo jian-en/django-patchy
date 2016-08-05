@@ -14,42 +14,40 @@ _locals = threading.local()
 def this_thread_is_sql_monitoring():
     return getattr(_locals, 'sql_monitoring', True)
 
+
 def sql_monitoring_this_thread():
     _locals.sql_monitoring = True
+
 
 def sql_unmonitoring_this_thread():
     _locals.sql_monitoring = False
 
+
 class NoSQLMonitoring(object):
-     """A contextmanager/decorator to use the master database."""
-     def __call__(self, func):
-         @wraps(func)
-         def decorator(*args, **kw):
-             with self:
-                 return func(*args, **kw)
-         return decorator
 
-     def __enter__(self):
-         _locals.patchy_outer_scope = this_thread_is_sql_monitoring()
-         sql_unmonitoring_this_thread()
+    def __call__(self, func):
+        @wraps(func)
+        def decorator(*args, **kw):
+            with self:
+                return func(*args, **kw)
+        return decorator
 
-     def __exit__(self, type, value, tb):
-         if _locals.patchy_outer_scope:
+    def __enter__(self):
+        _locals.patchy_outer_scope = this_thread_is_sql_monitoring()
+        sql_unmonitoring_this_thread()
+
+    def __exit__(self, type, value, tb):
+        if _locals.patchy_outer_scope:
             sql_monitoring_this_thread()
 
 no_sql_monitoring = NoSQLMonitoring()
-
-
-try:
-    TIMEOUT = settings.PATCHY_LONG_SQL_TIMEOUT
-except AttributeError:
-    TIMEOUT = 0.05  # 50 ms
 
 
 original = CursorWrapper.execute
 
 
 def long_sql_execute_wrapper(*args, **kwargs):
+    TIMEOUT = getattr(settings, 'PATCHY_LONG_SQL_TIMEOUT', 0.05)
     try:
         start = time.time()
         result = original(*args, **kwargs)
