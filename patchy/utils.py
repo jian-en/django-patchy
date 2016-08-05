@@ -30,12 +30,12 @@ class NoSQLMonitoring(object):
          return decorator
 
      def __enter__(self):
-         _locals.old = this_thread_is_sql_monitoring()
-         sql_monitoring_this_thread()
+         _locals.patchy_outer_scope = this_thread_is_sql_monitoring()
+         sql_unmonitoring_this_thread()
 
      def __exit__(self, type, value, tb):
-         if not _locals.old:
-             sql_unmonitoring_this_thread()
+         if _locals.patchy_outer_scope:
+            sql_monitoring_this_thread()
 
 no_sql_monitoring = NoSQLMonitoring()
 
