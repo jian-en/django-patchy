@@ -58,6 +58,14 @@ X-ELAPSED: 0.005 # it means the request costs 5 ms
 
 * If it exceeds the `PATCHY_LONG_REQUEST_TIMEOUT` a error log message will be sent.
 
+4. Add some urls to ignore list(optional), regular expression is supported.
+
+```python
+PATCHY_LONG_REQUEST_IGNORE_URLS = [
+    r'^/_admin/.*$',
+]
+```
+
 # Utilities
 
 ## long_sql_execute_wrapper
@@ -93,3 +101,22 @@ PATCHY_LONG_SQL_TIMEOUT = 0.01  # set the timeout to 10 miliseconds
 Result:
 
 * If the sql operation exceeds the `PATCHY_LONG_SQL_TIMEOUT` a error log message will be sent.
+
+4. no\_sql\_monitoring
+
+`no_sql_monitoring` is a decorator for wrapping code to skip sql monitoring.
+
+```python
+from patchy.utils import no_sql_monitoring
+
+@no_sql_monitoring
+def transaction_status(request, transaction_no):
+    transaction = Transaction.objects.get(transaction_no=transaction_no)
+
+    return ResponseBuilder.build_success_json_response(
+        msg='查询订单成功',
+        data={
+            'transaction_no': transaction_no,
+            'transaction_status': transaction.transaction_status
+    })
+```
