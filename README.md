@@ -30,7 +30,7 @@ MIDDLEWARE_CLASSES = (
 )
 ```
 
-2. Add logger handler with `pathcy.middleware`:
+2. Add logger handler with `patchy.middleware`:
 
 Example:
 
@@ -80,7 +80,7 @@ from patchy.utils import long_sql_execute_wrapper
 utils.CursorWrapper.execute = long_sql_execute_wrapper
 ```
 
-2. Add logger handler with `pathcy.utils`:
+2. Add logger handler with `patchy.utils`:
 
 Example:
 
